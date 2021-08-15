@@ -1,4 +1,5 @@
 let resetScreen = false;
+let operatorToggle = false;
 
 let operators = {
   add: (a, b) => parseInt(a) + parseInt(b), // need parseInt because it was doing string concat.
@@ -15,13 +16,10 @@ let calculator = {
       document.querySelector("#storedValue").textContent = "";
       //   calculator.calculate();
     }
-
     storedValue.textContent +=
       document.querySelector(".calculator-display").textContent + operator;
     display.update(operator);
-    setTimeout(function () {
-      display.update("");
-    }, 200);
+    display.update("");
   },
   convertOperator: (operator) => {
     if (operator === "+") return "add";
@@ -36,8 +34,11 @@ let calculator = {
     let operator = calculator.convertOperator(
       storedValue.charAt(storedValue.length - 1)
     );
+
+    if (operator === undefined) return;
+
     console.log(
-      `SV: ${storedValue}, FV:${firstValue}, SV:${secondValue}, OP:${operator}`
+      `StoredV: ${storedValue}, 1stV:${firstValue}, 2ndV:${secondValue}, OP:${operator}`
     );
     let calculatorDisplay = document.querySelector(".calculator-display");
     if (operator === "divide" && secondValue === "0") {
@@ -62,7 +63,12 @@ let calculator = {
     document.querySelector("#eight").onclick = () => display.update(8);
     document.querySelector("#nine").onclick = () => display.update(9);
     document.querySelector("#zero").onclick = () => display.update(0);
-    document.querySelector("#clear").onclick = () => display.update("");
+    document.querySelector("#clear").onclick = () => {
+      display.update("");
+      document.querySelector("#storedValue").textContent = "";
+    };
+    document.querySelector("#decimal").onclick = () =>
+      display.addDecimalPoint();
 
     document.querySelector("#equals").onclick = () => calculator.calculate();
     document.querySelector("#divide").onclick = () => {
@@ -74,17 +80,47 @@ let calculator = {
       calculator.addToStoredValue("+");
     document.querySelector("#subtract").onclick = () =>
       calculator.addToStoredValue("-");
+    window.onkeydown = (e) => display.handleKeyboardInput(e);
   },
 };
 
 let display = {
   update: (value) => {
-    if (resetScreen)
+    if (resetScreen) {
       document.querySelector(".calculator-display").textContent = "";
-    resetScreen = false;
+    }
+    console.log(typeof value);
     typeof value === "number"
       ? (document.querySelector(".calculator-display").textContent += value)
       : (document.querySelector(".calculator-display").textContent = value);
+
+    resetScreen = false;
+  },
+  addDecimalPoint: () => {
+    let calculatorDisplay = document.querySelector(".calculator-display");
+    if (resetScreen) calculatorDisplay.textContent = "";
+
+    if (calculatorDisplay.textContent === "")
+      calculatorDisplay.textContent = "0";
+
+    if (calculatorDisplay.textContent.includes(".")) return false;
+
+    calculatorDisplay.textContent += ".";
+  },
+  handleKeyboardInput: (e) => {
+    if (e.key >= 0 && e.key <= 9) display.update(parseInt(e.key));
+    if (e.key === ".") display.addDecimalPoint();
+    if (e.key === "=" || e.key === "Enter") calculator.calculate();
+    if (e.key === "Backspace") display.backspace();
+    if (e.key === "Escape") display.update("");
+    if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/")
+      calculator.addToStoredValue(e.key);
+  },
+  backspace: () => {
+    let calculatorDisplay = document.querySelector(".calculator-display");
+    calculatorDisplay.textContent = calculatorDisplay.textContent
+      .toString()
+      .slice(0, -1);
   },
 };
 
