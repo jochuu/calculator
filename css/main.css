@@ -69,5 +69,10 @@ body {
 
 .clear {
   grid-row: 6 / 7;
-  grid-column: 1 / 4;
+  grid-column: 2 / 4;
+}
+
+.backspace {
+  grid-row: 6 / 7;
+  grid-column: 1/ 2;
 }
