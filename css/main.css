@@ -3,10 +3,15 @@
   --digit-color: #5d576b;
   --function-button-color: #f7567c;
   --digit-button-color: #99e1d9;
+  --selected-button-color: #fcfcfc;
 }
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button:active {
+  background-color: var(--selected-button-color);
 }
 
 .container {
