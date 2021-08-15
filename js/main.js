@@ -37,9 +37,6 @@ let calculator = {
 
     if (operator === undefined) return;
 
-    console.log(
-      `StoredV: ${storedValue}, 1stV:${firstValue}, 2ndV:${secondValue}, OP:${operator}`
-    );
     let calculatorDisplay = document.querySelector(".calculator-display");
     if (operator === "divide" && secondValue === "0") {
       calculatorDisplay.textContent = "lol u tried";
