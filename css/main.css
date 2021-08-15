@@ -12,6 +12,7 @@ body {
 
 button:active {
   background-color: var(--selected-button-color);
+  color: var(--digit-button-color);
 }
 
 .container {
