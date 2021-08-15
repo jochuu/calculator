@@ -52,10 +52,6 @@ let calculator = {
     resetScreen = true;
   },
   setupEventListeners: () => {
-    let calculatorDisplay = document.querySelector(
-      ".calculator-display"
-    ).textContent;
-
     document.querySelector("#one").onclick = () => display.update(1);
     document.querySelector("#two").onclick = () => display.update(2);
     document.querySelector("#three").onclick = () => display.update(3);
@@ -69,8 +65,9 @@ let calculator = {
     document.querySelector("#clear").onclick = () => display.update("");
 
     document.querySelector("#equals").onclick = () => calculator.calculate();
-    document.querySelector("#divide").onclick = () =>
+    document.querySelector("#divide").onclick = () => {
       calculator.addToStoredValue("/");
+    };
     document.querySelector("#multiply").onclick = () =>
       calculator.addToStoredValue("*");
     document.querySelector("#add").onclick = () =>
@@ -85,7 +82,7 @@ let display = {
     if (resetScreen)
       document.querySelector(".calculator-display").textContent = "";
     resetScreen = false;
-    typeof (value === "number")
+    typeof value === "number"
       ? (document.querySelector(".calculator-display").textContent += value)
       : (document.querySelector(".calculator-display").textContent = value);
   },
